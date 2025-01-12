@@ -1,0 +1,20 @@
+get http://localhost:3000/todos
+###
+GET http://localhost:3000/todos/6783d0abd88075c56af408bb
+###
+POST http://localhost:3000/todos
+Content-Type: application/json
+
+{
+	"title": "kascmkwemncmecmw ncwjnccxk123",
+	"completed": true
+}
+###
+DELETE http://localhost:3000/todos/6783d9d027dcad490256fd6e
+###
+PATCH http://localhost:3000/todos/678426f62b9bf8fd5ec77d34
+Content-Type: application/json
+
+{
+	"completed": true
+}
