@@ -27,7 +27,13 @@ router.post('/', async (req, res) => {
 router.patch('/:id', getTodos, async (req, res) => {
 	if (req.body.completed !== undefined) {
 		res.todo.completed = req.body.completed;
-	} else {
+	} 
+	if (req.body.title !== undefined) {
+		res.todo.title = req.body.title;
+	}
+	if (req.body.description !== undefined) {
+		res.todo.description = req.body.description;
+	}else {
 		return res.status(400).json({ message: "Missing completed field" });
 	}
 	try {
@@ -37,7 +43,6 @@ router.patch('/:id', getTodos, async (req, res) => {
 		res.status(400).json({ message: err.message });
 	}
 });
-
 // DELETE
 router.delete('/:id', getTodos, async (req, res) => {
 	try {

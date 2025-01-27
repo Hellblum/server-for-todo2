@@ -12,9 +12,11 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/todos/6783d9d027dcad490256fd6e
 ###
-PATCH http://localhost:3000/todos/678426f62b9bf8fd5ec77d34
+PATCH http://localhost:3000/todos/67876c4c52bfb56041073edb
 Content-Type: application/json
 
 {
+	"description": "edbevev555555mwk",
+	"title": "blfe",
 	"completed": true
 }
