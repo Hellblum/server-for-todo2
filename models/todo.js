@@ -18,4 +18,4 @@ todoSchema.set("toJSON", {
 	},
 });
 
-module.exports = mongoose.model("Todos", todoSchema);
+module.exports = mongoose.model("Todos", todoSchema);																													
