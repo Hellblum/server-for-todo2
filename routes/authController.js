@@ -37,22 +37,27 @@ class authController{
 	}
 
 	async login(req, res) {
-		try{
-			const {username, password} = req.body
-			const user = await User.findOne({username})
-			if(!user) {
-				return res.status(400).json({message: "User ${username} not found"})
-			}
-			const validPassword = bcrypt.compareSync(password, user.password)
-			if(!validPassword) {
-				return res.status(400).json({message: "Incorrect password"})
-			}
-			const token = generateAccessToken(user._id, user.roles)
-			return res.json({token})
-		}
-		catch (e) {
-			console.log(e)
-			res.status(400).json({message: "Login error"})
+		try {
+				const { username, password } = req.body;
+				const user = await User.findOne({ username });
+				if (!user) {
+					return res.status(400).json({ message: `User ${username} not found` });
+				}
+				const validPassword = bcrypt.compareSync(password, user.password);
+				if (!validPassword) {
+					return res.status(400).json({ message: "Incorrect password" });
+				}
+				const token = generateAccessToken(user._id, user.roles);
+				res.cookie('token', token, {
+					httpOnly: true,
+					secure: true,
+					sameSite: 'None'
+				});
+				console.log('Token set in cookie:', token);
+				return res.json({ success: true });
+		} catch (e) {
+				console.log(e);
+				res.status(400).json({ message: "Login error" });
 		}
 	}
 	
@@ -63,6 +68,24 @@ class authController{
 		}
 		catch (e) {
 			console.log(e)
+		}
+	}
+
+	async checkToken(req, res) {
+		try {
+				const token = req.cookies.token;
+				if (!token) {
+					console.log("Token not found in cookies");
+					return res.status(403).json({ message: "User unauthorized" });
+				}
+				console.log("Token found in cookies:", token);
+				const decodedData = jwt.verify(token, secret);
+				req.user = decodedData;
+				console.log("Token is valid", decodedData);
+				res.status(200).json({ message: "Token is valid", user: decodedData });
+		} catch (e) {
+				console.log("Token verification failed", e);
+				return res.status(403).json({ message: "Token verification failed" });
 		}
 	}
 }
