@@ -11,6 +11,5 @@ router.post('/registration', [
 router.post('/login', conrtoller.login)
 router.get('/users', authMiddleware, conrtoller.getUsers)
 router.get('/check-token', authMiddleware, conrtoller.checkToken)
-router.post('/logout', conrtoller.logout)
 
 module.exports = router;

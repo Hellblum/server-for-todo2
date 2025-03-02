@@ -21,7 +21,7 @@ class authController{
 				return res.status(400).json({message: "Error during registration", errors})
 			}
 			const {username, password} = req.body
-			const candidate = await User.findOne({username})
+			const candidate = await User.findOne({ username })
 			if(candidate) {
 				return res.status(400).json({message: "this username already exists"})
 			}
@@ -32,6 +32,7 @@ class authController{
 			return res.json({message: "User successfully created"})
 		}
 		catch (e) {
+			console.log(e)
 			res.status(400).json({message: "Registration error"})
 		}
 	}
@@ -49,46 +50,11 @@ class authController{
 				}
 				const token = generateAccessToken(user._id, user.roles);
 				return res.json({token})
-				// res.cookie('token', token, {
-				// 	httpOnly: false,
-				// 	secure: false,
-				// 	sameSite: 'None'
-				// });
-				// console.log('Token set in cookie:', token);
-				// return res.json({ success: true });
 		} catch (e) {
 				console.log(e);
 				res.status(400).json({ message: "Login error" });
 		}
 	}
-	
-	async getUsers(req, res) {
-		try{
-			const users = await User.find()
-			res.json(users)
-		}
-		catch (e) {
-			console.log(e)
-		}
-	}
-
-	// async checkToken(req, res) {
-	// 	try {
-	// 			const token = req.cookies.token;
-	// 			if (!token) {
-	// 				console.log("Token not found in cookies");
-	// 				return res.status(403).json({ message: "User unauthorized" });
-	// 			}
-	// 			console.log("Token found in cookies:", token);
-	// 			const decodedData = jwt.verify(token, secret);
-	// 			req.user = decodedData;
-	// 			console.log("Token is valid", decodedData);
-	// 			res.status(200).json({ message: "Token is valid", user: decodedData });
-	// 	} catch (e) {
-	// 			console.log("Token verification failed", e);
-	// 			return res.status(403).json({ message: "Token verification failed" });
-	// 	}
-	// }
 
 	async checkToken(req, res) {
 		try {
@@ -109,17 +75,13 @@ class authController{
 		}
 	}
 
-	async logout(req, res) {
-		try {
-				res.cookie('token', '', {
-					httpOnly: true,
-					expires: new Date(0),
-					path: '/'
-				});
-				res.status(200).json({ message: 'Logged out' });
-		} catch (e) {
-				console.log(e);
-				res.status(500).json({ message: "Error during logout" });
+	async getUsers(req, res) {
+		try{
+			const users = await User.find()
+			res.json(users)
+		}
+		catch (e) {
+			console.log(e)
 		}
 	}
 }
